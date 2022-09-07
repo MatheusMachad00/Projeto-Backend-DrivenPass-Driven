@@ -3,7 +3,6 @@ import { TypeNewUserData } from "../types/userTypes";
 
 export async function checkEmail(email: string) {
   const result = await prisma.users.findFirst({ where: { email } });
-  console.log("eu sou repository",result)
   return result;
 };
 
