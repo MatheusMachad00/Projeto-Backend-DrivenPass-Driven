@@ -24,6 +24,7 @@
     "bcrypt": "^5.0.1",
     "chalk": "^4.1.2",
     "cors": "^2.8.5",
+    "cryptr": "^6.0.3",
     "dotenv": "^16.0.2",
     "express": "^4.18.1",
     "express-async-errors": "^3.1.1",
@@ -32,6 +33,7 @@
     "pg": "^8.8.0"
   },
   "devDependencies": {
+    "@types/cryptr": "^4.0.1",
     "@types/node": "^18.7.15",
     "nodemon": "^2.0.19",
     "prisma": "^4.3.1",

@@ -23,7 +23,6 @@ export async function login(userEmail: string, userPassword: string) {
   await authRepository.createUserToken(userData.id, token)
   
   const data = await authRepository.getUserData(userData.id);
-  console.log(data);
 
   return data;
 };

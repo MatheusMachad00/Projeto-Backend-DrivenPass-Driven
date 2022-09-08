@@ -9,6 +9,6 @@ export async function validateToken(req: Request, res: Response, next: NextFunct
   const verified = jwt.verify(String(token), String(KEY_JWT));
   if (!verified) throw { type: 'unauthorized' };
 
-
+  res.locals.verifiedToken = verified;
   next();
 }
