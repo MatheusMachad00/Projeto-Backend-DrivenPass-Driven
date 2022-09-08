@@ -7,7 +7,6 @@ export async function signup(email: string, password: string) {
   const encryptedPassword = bcrypt.hashSync(password, SALT);
 
   const emailExists = await authRepository.checkEmail(email);
-  console.log(emailExists);
   if (emailExists) throw { type: 'conflict' };
 
   await authRepository.createUser({ email, password: encryptedPassword });
@@ -16,8 +15,15 @@ export async function signup(email: string, password: string) {
 export async function login(userEmail: string, userPassword: string) {
   const userData: any = await authRepository.checkEmail(userEmail);
   const checkpassword = bcrypt.compareSync(userPassword, userData.password);
+  const KEY_JWT = process.env.JWT_SECRET;
 
   if(!checkpassword) throw { type: 'unauthorized' };
+
+  const token = jwt.sign(userData, String(KEY_JWT));
+  await authRepository.createUserToken(userData.id, token)
   
-  return 'token';
+  const data = await authRepository.getUserData(userData.id);
+  console.log(data);
+
+  return data;
 };
