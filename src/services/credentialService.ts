@@ -1,7 +1,7 @@
-import bcrypt from 'bcrypt';
 import * as credentialRepository from '../repositories/credentialRepository'
 import { TypeNewCredentialData } from '../types/credentialTypes';
 import Cryptr from 'cryptr';
+import * as decryptUtils from '../utils/decryptCredential'
 
 
 export async function createCredential(credential: TypeNewCredentialData) {
@@ -13,8 +13,6 @@ export async function createCredential(credential: TypeNewCredentialData) {
 
   const { userId, url, username, password, title } = credential;
 
-/*  const SALT = 10;
-  const encryptedPassword = bcrypt.hashSync(password, SALT); */
   const encryptedPassword = cryptr.encrypt(password);
 
   let objectData = {
@@ -30,20 +28,31 @@ export async function createCredential(credential: TypeNewCredentialData) {
 
 export async function getAllUserCredentials(userId: number) {
   const result = await credentialRepository.getAllCredentials(userId);
+  const decryptedData = await decryptUtils.decryptPassword(result);
+  
+  return decryptedData;
+};
+
+export async function getCredentialById(credentialId: number, userId: number) {
+  const result = await credentialRepository.getCredentialsById(credentialId);
   const CRYPTR_KEY = String(process.env.CRYPTR_SECRET)
   const cryptr = new Cryptr(CRYPTR_KEY);
 
-  /* let decryptedData = result.map((r) => {
-    const { id, userId, url, username, password, title } = r;
-    const decryptedPassword = cryptr.decrypt(password);
-    {
-      id
-      userId
-      url
-      username
-      decryptedPassword
-    }
-  }); */
+  if(!result) throw { type: 'not_found' };
+  if(result?.userId !== userId) throw { type: 'unauthorized' };
 
-  return result;
+  const { password } = result
+  const decryptedPassword = cryptr.decrypt(password);
+  const decryptedData = {...result, password: decryptedPassword};
+
+  return decryptedData;
 };
+
+export async function deleteCredential(credentialId: number, userId: number) {
+  const result = await credentialRepository.getCredentialsById(credentialId);
+
+  if(!result) throw { type: 'not_found' };
+  if(result?.userId !== userId) throw { type: 'unauthorized' };
+
+  await credentialRepository.deleteCredentials(credentialId);
+}
