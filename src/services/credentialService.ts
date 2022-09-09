@@ -1,7 +1,7 @@
-import * as credentialRepository from '../repositories/credentialRepository'
+import * as credentialRepository from '../repositories/credentialRepository';
 import { TypeNewCredentialData } from '../types/credentialTypes';
 import Cryptr from 'cryptr';
-import * as decryptUtils from '../utils/decryptCredential'
+import * as decryptUtils from '../utils/decryptCredential';
 
 
 export async function createCredential(credential: TypeNewCredentialData) {
@@ -55,4 +55,4 @@ export async function deleteCredential(credentialId: number, userId: number) {
   if(result?.userId !== userId) throw { type: 'unauthorized' };
 
   await credentialRepository.deleteCredentials(credentialId);
-}
+};
