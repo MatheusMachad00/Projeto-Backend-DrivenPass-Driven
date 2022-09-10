@@ -7,24 +7,24 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model cardType {
-  id    Int     @id(map: "cardType_pk") @default(autoincrement())
-  type  String  @db.VarChar(255)
-  cards cards[]
-}
-
 model cards {
   id             Int      @id(map: "cards_pk") @default(autoincrement())
   userId         Int
-  cardNumber     Int      @unique
+  cardNumber     String      @unique
   cardName       String   @db.VarChar(255)
-  cvv            Int
-  expirationDate Int
-  password       Int
-  type           Int
+  cvv            String
+  expirationDate String
+  password       String
+  isVirtual      Boolean
+  type           CardType
   title          String   @db.VarChar(255)
   users          users    @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "cards_fk0")
-  cardType       cardType @relation(fields: [type], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "cards_fk1")
+}
+
+enum CardType {
+  credit
+  debit
+  both
 }
 
 model credentials {

@@ -1,7 +1,7 @@
 import * as credentialRepository from '../repositories/credentialRepository';
 import { TypeNewCredentialData } from '../types/credentialTypes';
 import Cryptr from 'cryptr';
-import * as decryptUtils from '../utils/decryptCredential';
+import * as decryptUtils from '../utils/decryptData';
 
 
 export async function createCredential(credential: TypeNewCredentialData) {

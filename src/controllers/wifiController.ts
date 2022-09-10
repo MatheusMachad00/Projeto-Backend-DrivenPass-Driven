@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import * as wifiServices from '../services/wifisService'
 
+
 export async function createWifi(req: Request, res: Response) {
   const { verifiedToken } = res.locals;
   const { title, wifiName, wifiPassword } = req.body;
