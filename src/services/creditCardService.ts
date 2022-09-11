@@ -52,7 +52,7 @@ export async function getCreditCardsById(cardId: number, userId: number) {
 };
 
 export async function deleteCreditCard(cardId: number, userId: number) {
-  const result: any = await creditCardRepository.deleteCreditCards(cardId);
+  const result: any = await creditCardRepository.getCreditCardsById(cardId);
 
   if(!result) throw { type: 'not_found' };
   if(result?.userId !== userId) throw { type: 'unauthorized' };
