@@ -30,3 +30,7 @@ export async function getUserData(id: number) {
   });
   return result;
 };
+
+/* export async function deleteToken(userId: number) {
+  const result = await prisma.tokens.delete({ where: { userId } })
+} */
